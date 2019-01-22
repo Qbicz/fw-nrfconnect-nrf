@@ -16,6 +16,7 @@
 #include "module_state_event.h"
 
 #include "ble_event.h"
+#include "button_event.h"
 
 #include <logging/log.h>
 LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BLE_SCANNING_LOG_LEVEL);
@@ -27,6 +28,8 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_BLE_SCANNING_LOG_LEVEL);
 
 static bt_addr_le_t target_addr;
 
+static bool bonds_initialized;
+static bool bonds_remove;
 
 static void save_address(struct bt_conn *conn)
 {
@@ -88,6 +91,18 @@ static int enable_settings(void)
 			goto error;
 		}
 		LOG_INF("Settings loaded");
+
+		if (IS_ENABLED(CONFIG_DESKTOP_BLE_BOND_REMOVAL)) {
+			if (bonds_remove) {
+				if (bt_unpair(BT_ID_DEFAULT, BT_ADDR_LE_ANY)) {
+					LOG_ERR("Failed to remove bonds");
+				} else {
+					LOG_WRN("Removed bonded devices");
+				}
+			}
+
+			bonds_initialized = true;
+		}
 	}
 
 error:
@@ -345,6 +360,28 @@ static bool event_handler(const struct event_header *eh)
 		return false;
 	}
 
+	if (IS_ENABLED(CONFIG_DESKTOP_BLE_BOND_REMOVAL)) {
+		if (is_button_event(eh)) {
+			if (bonds_initialized) {
+				return false;
+			}
+
+			const struct button_event *event =
+				cast_button_event(eh);
+
+			LOG_ERR("F: key 0x%x", event->key_id);
+
+			if ((event->key_id ==
+			    CONFIG_DESKTOP_BLE_BOND_REMOVAL_BUTTON) &&
+			    event->pressed) {
+				LOG_WRN("F: bonds_remove set");
+				bonds_remove = true;
+			}
+
+			return false;
+		}
+	}
+
 	/* If event is unhandled, unsubscribe. */
 	__ASSERT_NO_MSG(false);
 
@@ -354,3 +391,6 @@ EVENT_LISTENER(MODULE, event_handler);
 EVENT_SUBSCRIBE(MODULE, module_state_event);
 EVENT_SUBSCRIBE(MODULE, ble_peer_event);
 EVENT_SUBSCRIBE_FINAL(MODULE, ble_discovery_complete_event);
+#if CONFIG_DESKTOP_BLE_BOND_REMOVAL
+EVENT_SUBSCRIBE(MODULE, button_event);
+#endif /* CONFIG_DESKTOP_BLE_BOND_REMOVAL */

@@ -108,6 +108,9 @@ config DESKTOP_BUTTONS_EXPANDER_ENABLE
 config DESKTOP_BUTTONS_MATRIX_ENABLE
 	bool "Buttons scanned from key matrix"
 
+config DESKTOP_BUTTONS_GPIO_ENABLE
+	bool "Buttons attached directly to GPIO"
+
 endchoice
 
 config DESKTOP_KEYMAP

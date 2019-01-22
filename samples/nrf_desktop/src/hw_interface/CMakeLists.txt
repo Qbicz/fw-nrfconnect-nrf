@@ -28,6 +28,9 @@ target_sources_ifdef(CONFIG_DESKTOP_BUTTONS_EXPANDER_ENABLE app
 target_sources_ifdef(CONFIG_DESKTOP_BUTTONS_MATRIX_ENABLE app
                      PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/buttons_matrix.c)
 
+target_sources_ifdef(CONFIG_DESKTOP_BUTTONS_GPIO_ENABLE app
+                     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/buttons_gpio.c)
+
 target_sources_ifdef(CONFIG_DESKTOP_WHEEL_ENABLE app
                      PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/wheel.c)
 
