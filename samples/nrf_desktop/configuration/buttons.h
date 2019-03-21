@@ -12,20 +12,20 @@ struct button {
 };
 
 #if CONFIG_BOARD_NRF52840_PCA20041
-static const char * const port_map[] = {DT_GPIO_P0_DEV_NAME};
+static const char * const port_map[] = {DT_GPIO_P0_DEV_NAME,
+					DT_GPIO_P1_DEV_NAME};
 
-const struct button col[] = {
-	{ .port = 0, .pin = 2 },
-	{ .port = 0, .pin = 21 },
-	{ .port = 0, .pin = 20 },
-	{ .port = 0, .pin = 19 },
-};
+const struct button col[] = {};
 
 const struct button row[] = {
-	{ .port = 0, .pin = 29 },
+	{ .port = 0, .pin = 2 },
+	{ .port = 1, .pin = 15 },
+	{ .port = 1, .pin = 14 },
+	//{ .port = 0, .pin = 29 },
 	{ .port = 0, .pin = 31 },
 	{ .port = 0, .pin = 22 },
 	{ .port = 0, .pin = 24 },
+	{ .port = 0, .pin = 4 },
 };
 #elif CONFIG_BOARD_NRF52840_PCA10059
 static const char * const port_map[] = {DT_GPIO_P1_DEV_NAME};

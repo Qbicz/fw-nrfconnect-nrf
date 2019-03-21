@@ -101,7 +101,7 @@ LOG_MODULE_REGISTER(MODULE, CONFIG_DESKTOP_MOTION_LOG_LEVEL);
 
 /* Sensor pin configuration */
 #define OPTICAL_PIN_PWR_CTRL			14
-#define OPTICAL_PIN_MOTION			18
+#define OPTICAL_PIN_MOTION			21
 #define OPTICAL_PIN_CS				13
 
 /* Sensor initialization values */

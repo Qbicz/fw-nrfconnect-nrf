@@ -11,8 +11,6 @@
 
 
 static const struct pin_state port0_on[] = {
-	{4,  0}, /* accelerometer power switch */
-
 #if !defined(CONFIG_DESKTOP_MOTION_OPTICAL_ENABLE)
 	{14, 0}, /* motion power switch */
 #endif
@@ -22,6 +20,9 @@ static const struct pin_state port0_on[] = {
 
 	{9,  0}, /* NFC1 */
 	{10, 0}, /* NFC2 */
+
+	{19, 0}, /* DBG3 */
+	{20, 0}, /* DBG4 */
 
 #if !defined(CONFIG_DESKTOP_LED_ENABLE)
 	{23, 0}, /* Front LED red */
@@ -43,12 +44,13 @@ static const struct pin_state port1_on[] = {
 	{2,  0}, /* N/C */
 	{4,  0}, /* N/C */
 	{6,  0}, /* N/C */
-	{8,  0}, /* N/C */
 	{9,  0}, /* N/C */
 	{10, 0}, /* N/C */
 	{11, 0}, /* N/C */
 	{12, 0}, /* N/C */
-	{13, 0}, /* N/C */
+#if defined(CONFIG_DESKTOP_LED_ENABLE)
+	{13, 1}, /* LED power enable */
+#endif
 };
 
 static const struct pin_state port0_off[] = {
