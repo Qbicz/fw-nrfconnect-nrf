@@ -23,6 +23,7 @@ config DESKTOP_HID_MPLAYER
 
 config DESKTOP_BAS_ENABLE
 	bool
+	select BT_GATT_DYNAMIC_DB
 	help
 	  This option enables battery service.
 
